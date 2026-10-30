@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="RaheemDesign Services & Packages - Explore professional web design, e-commerce development, WordPress solutions, and flexible pricing packages.">
+  <title>Services & Packages | RaheemDesign</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome 6 CDN & Remixicon CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="logo">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24" width="22" height="22"><path fill="#0b0f19" d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/></svg>
+        </div>
+        <span>Raheem<span class="text-gradient">Design</span></span>
+      </a>
+
+      <ul class="nav-menu">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="about.html" class="nav-link">About</a></li>
+        <li><a href="services.html" class="nav-link active">Services</a></li>
+        <li><a href="services.html#pricing" class="nav-link">Packages</a></li>
+        <li><a href="gallery.html" class="nav-link">Portfolio</a></li>
+        <li><a href="contact.html" class="nav-link">Contact</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="contact.html" class="btn btn-primary" style="white-space: nowrap;">
+          <i class="fa-solid fa-rocket"></i> Get a Website
+        </a>
+      </div>
+
+      <button class="hamburger" aria-label="Toggle Navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Drawer Menu -->
+  <div class="mobile-nav">
+    <a href="index.html" class="logo" style="margin-bottom: 1.5rem;">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24" width="22" height="22"><path fill="#0b0f19" d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/></svg>
+      </div>
+      <span>Raheem<span class="text-gradient">Design</span></span>
+    </a>
+    <ul class="mobile-menu">
+      <li><a href="index.html" class="nav-link">Home</a></li>
+      <li><a href="about.html" class="nav-link">About</a></li>
+      <li><a href="services.html" class="nav-link active">Services</a></li>
+      <li><a href="services.html#pricing" class="nav-link">Packages</a></li>
+      <li><a href="gallery.html" class="nav-link">Portfolio</a></li>
+      <li><a href="contact.html" class="nav-link">Contact</a></li>
+    </ul>
+    <a href="contact.html" class="btn btn-primary" style="margin-top: 1rem; width: 100%;">
+      <i class="fa-brands fa-whatsapp"></i> Get a Website
+    </a>
+  </div>
+  <div class="overlay"></div>
+
+  <!-- Page Header Banner -->
+  <header class="page-banner">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="index.html">Home</a> <i class="fa-solid fa-chevron-right" style="font-size: 0.65rem;"></i> <span>Services & Packages</span>
+      </div>
+      <h1 class="page-banner-title">My Services & <span class="text-gradient">Packages</span></h1>
+      <p class="page-banner-desc">
+        Comprehensive web design, development, e-commerce, and maintenance packages tailored to grow your online business.
+      </p>
+    </div>
+  </header>
+
+  <!-- Detailed Services Grid -->
+  <section class="services">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-tag">
+          <i class="fa-solid fa-gears"></i> WHAT I DO
+        </div>
+        <h2 class="section-title">Core Services</h2>
+        <p class="section-subtitle">
+          Professional website design services for businesses, online stores, academies, and personal brands.
+        </p>
+      </div>
+
+      <div class="services-grid" id="cmsServicesGrid">
+        <!-- Dynamic Services Cards Rendered by CMS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Packages Section -->
+  <section id="pricing" class="pricing" style="background: rgba(255,255,255,0.015);">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-tag">
+          AFFORDABLE & FLEXIBLE
+        </div>
+        <h2 class="section-title">Website Packages</h2>
+        <p class="section-subtitle">
+          Transparent pricing packages tailored for startups, small businesses, and enterprise projects.
+        </p>
+      </div>
+
+      <div class="pricing-grid" id="cmsPackagesGrid">
+        <!-- Dynamic Packages Rendered by CMS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- What's Included Feature Table Section -->
+  <section class="services">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-tag">
+          <i class="fa-solid fa-circle-check"></i> STANDARD FEATURES
+        </div>
+        <h2 class="section-title">What’s Included in Every Project</h2>
+        <p class="section-subtitle">
+          Every website built by RaheemDesign comes standard with essential high-performance features.
+        </p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;" class="reveal">
+        <div class="about-card">
+          <h4 style="color: var(--primary); font-size: 1.15rem; margin-bottom: 0.5rem;"><i class="fa-solid fa-mobile-screen"></i> 100% Mobile Optimized</h4>
+          <p>Ensuring smooth rendering and optimal font sizing across iOS, Android, tablets, and 4K displays.</p>
+        </div>
+        <div class="about-card">
+          <h4 style="color: var(--primary); font-size: 1.15rem; margin-bottom: 0.5rem;"><i class="fa-solid fa-bolt"></i> Speed & SEO Optimization</h4>
+          <p>Clean HTML structure, optimized compressed images, and fast load times for Google ranking.</p>
+        </div>
+        <div class="about-card">
+          <h4 style="color: var(--primary); font-size: 1.15rem; margin-bottom: 0.5rem;"><i class="fa-brands fa-whatsapp"></i> WhatsApp Direct Integration</h4>
+          <p>Instant lead generation buttons allowing customers to contact you directly on your phone.</p>
+        </div>
+        <div class="about-card">
+          <h4 style="color: var(--primary); font-size: 1.15rem; margin-bottom: 0.5rem;"><i class="fa-solid fa-shield-halved"></i> Security & SSL Ready</h4>
+          <p>Secure code practices keeping your web files, form submissions, and customer data protected.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Frequently Asked Questions (FAQ) Section -->
+  <section class="pricing" style="background: rgba(255,255,255,0.02);">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-tag">
+          <i class="fa-solid fa-circle-question"></i> FREQUENTLY ASKED QUESTIONS
+        </div>
+        <h2 class="section-title">Got Questions?</h2>
+        <p class="section-subtitle">
+          Here are quick answers to common questions about project timelines, pricing, and process.
+        </p>
+      </div>
+
+      <div style="max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 1rem;" class="reveal">
+        <div class="about-card" style="padding: 1.25rem;">
+          <h4 style="color: var(--text-main); font-size: 1.05rem;"><i class="fa-solid fa-clock" style="color: var(--primary);"></i> How long does it take to complete a website?</h4>
+          <p style="margin-top: 0.4rem;">Single page & Silver websites take 3-5 days. Larger Golden & Diamond packages take 7-10 days depending on content and feature complexity.</p>
+        </div>
+        <div class="about-card" style="padding: 1.25rem;">
+          <h4 style="color: var(--text-main); font-size: 1.05rem;"><i class="fa-solid fa-credit-card" style="color: var(--primary);"></i> What are the payment terms?</h4>
+          <p style="margin-top: 0.4rem;">Standard terms are 50% advance to start the project and 50% upon final verification and launch live on your domain.</p>
+        </div>
+        <div class="about-card" style="padding: 1.25rem;">
+          <h4 style="color: var(--text-main); font-size: 1.05rem;"><i class="fa-solid fa-pen-to-square" style="color: var(--primary);"></i> Can I request changes or edits after launch?</h4>
+          <p style="margin-top: 0.4rem;">Yes! All packages include free revisions during development and technical support after launch.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Banner Section -->
+  <section style="padding: 4rem 0; text-align: center; background: linear-gradient(135deg, rgba(130, 194, 43, 0.1) 0%, rgba(11, 15, 25, 0.9) 100%); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color);">
+    <div class="container">
+      <h2 style="font-size: 2rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.75rem;">Need a Custom Quote or Package?</h2>
+      <p style="color: var(--text-muted); font-size: 1.1rem; max-width: 600px; margin: 0 auto 1.5rem;">
+        Contact me directly on WhatsApp to discuss your specific website requirements.
+      </p>
+      <a href="contact.html" class="btn btn-primary" style="font-size: 1.05rem;">
+        <i class="fa-solid fa-paper-plane"></i> Contact Me Now
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <!-- Brand Info -->
+        <div class="footer-brand">
+          <a href="index.html" class="logo">
+            <div class="logo-icon">
+              <svg viewBox="0 0 24 24" width="22" height="22"><path fill="#0b0f19" d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/></svg>
+            </div>
+            <span>Raheem<span class="text-gradient">Design</span></span>
+          </a>
+          <p>“Designing modern websites. Building digital success.”</p>
+        </div>
+
+        <!-- Quick Links -->
+        <div>
+          <h4 class="footer-heading">Quick Links</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="services.html#pricing">Packages</a></li>
+            <li><a href="gallery.html">Portfolio</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+
+        <!-- Contact & Location Info -->
+        <div>
+          <h4 class="footer-heading">Contact & Location</h4>
+          <ul class="footer-links">
+            <li><i class="fa-solid fa-envelope" style="color: var(--primary);"></i> <strong id="cmsFooterEmail">raheemdesign804@gmail.com</strong></li>
+            <li><i class="fa-brands fa-whatsapp" style="color: var(--primary);"></i> <strong id="cmsFooterWhatsApp">03012455577</strong></li>
+            <li style="font-size: 0.9rem; line-height: 1.5; margin-top: 0.5rem; color: var(--text-muted);">
+              <i class="fa-solid fa-location-dot" style="color: var(--primary);"></i>
+              <span id="cmsFooterAddress">Alfunun Academy, Hawksbay Rd, Musharraf Colony Sector 6, Hawkes Bay Town, Karachi, 74200, Pakistan</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>
+          &copy; 2026 <strong>RaheemDesign</strong>. All Rights Reserved.
+        </div>
+        <div>
+          Designed for high performance & business growth.
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Custom JavaScript -->
+  <script src="js/cms.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

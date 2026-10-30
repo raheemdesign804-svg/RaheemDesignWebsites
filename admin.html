@@ -1,0 +1,1518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RaheemDesign | Admin Dashboard & Live Content Editor</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome 6 CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* Admin Dashboard Layout & Theme */
+    .admin-body {
+      background-color: #0b0f19;
+      color: #ffffff;
+      min-height: 100vh;
+      display: flex;
+    }
+    
+    /* Login Overlay & Modals */
+    .login-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(11, 15, 25, 0.95);
+      backdrop-filter: blur(14px);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    
+    .login-box {
+      background: #121824;
+      border: 1px solid var(--border-hover, rgba(130, 194, 43, 0.4));
+      border-radius: 20px;
+      padding: 2.5rem;
+      max-width: 520px;
+      width: 100%;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.8), 0 0 30px var(--primary-glow, rgba(130, 194, 43, 0.25));
+    }
+    
+    .login-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: rgba(130, 194, 43, 0.15);
+      border: 1px solid var(--primary, #82C22B);
+      color: var(--primary, #82C22B);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      margin: 0 auto 1.25rem auto;
+      box-shadow: 0 0 20px var(--primary-glow, rgba(130, 194, 43, 0.3));
+    }
+
+    /* Admin Sidebar */
+    .admin-sidebar {
+      width: 270px;
+      background: #0f1623;
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 100;
+      transition: transform 0.3s ease;
+    }
+    
+    .admin-sidebar-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .admin-nav {
+      list-style: none;
+      padding: 1.25rem 0.85rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      flex-grow: 1;
+      overflow-y: auto;
+    }
+    
+    .admin-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      padding: 0.85rem 1.1rem;
+      border-radius: 12px;
+      color: #94a3b8;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    
+    .admin-nav-item:hover, .admin-nav-item.active {
+      background: rgba(130, 194, 43, 0.15);
+      color: var(--primary, #82C22B);
+      border: 1px solid rgba(130, 194, 43, 0.3);
+    }
+    
+    .admin-nav-item i {
+      font-size: 1.1rem;
+      width: 22px;
+      text-align: center;
+    }
+    
+    .admin-sidebar-footer {
+      padding: 1.25rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    /* Admin Main Workspace */
+    .admin-main {
+      margin-left: 270px;
+      flex-grow: 1;
+      padding: 2.25rem;
+      max-width: 1250px;
+      width: calc(100% - 270px);
+    }
+    
+    .admin-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+      padding-bottom: 1.25rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    
+    .tab-content {
+      display: none;
+    }
+    
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.35s ease;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+    
+    .stat-card {
+      background: #121824;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(130, 194, 43, 0.4);
+    }
+    
+    .stat-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      background: rgba(130, 194, 43, 0.15);
+      color: var(--primary, #82C22B);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+    
+    .admin-form-card {
+      background: #121824;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
+      padding: 1.85rem;
+      margin-bottom: 2rem;
+    }
+
+    .table-container {
+      width: 100%;
+      overflow-x: auto;
+      background: #121824;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+    }
+
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    .admin-table th, .admin-table td {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      font-size: 0.92rem;
+    }
+
+    .admin-table th {
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--primary, #82C22B);
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      letter-spacing: 0.05em;
+    }
+
+    .admin-table tr:hover {
+      background: rgba(255, 255, 255, 0.02);
+    }
+    
+    .btn-sm {
+      padding: 0.45rem 0.85rem;
+      font-size: 0.85rem;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    
+    .btn-danger {
+      background: #ef4444;
+      color: #ffffff;
+    }
+    .btn-danger:hover {
+      background: #dc2626;
+    }
+
+    .color-pill {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .color-pill:hover, .color-pill.active {
+      transform: scale(1.15);
+      border-color: #ffffff;
+    }
+
+    .table-actions {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .table-search-bar {
+      margin-bottom: 1rem;
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    @media (max-width: 992px) {
+      .admin-sidebar {
+        transform: translateX(-100%);
+      }
+      .admin-sidebar.mobile-open {
+        transform: translateX(0);
+      }
+      .admin-main {
+        margin-left: 0;
+        width: 100%;
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body class="admin-body">
+
+  <!-- Password Login Modal -->
+  <div id="loginOverlay" class="login-overlay">
+    <div class="login-box" style="text-align: center;">
+      <div class="login-icon">
+        <i class="fa-solid fa-lock"></i>
+      </div>
+      <h2 style="font-size: 1.6rem; font-weight: 800; margin-bottom: 0.5rem;">Admin Access</h2>
+      <p style="color: #94a3b8; font-size: 0.95rem; margin-bottom: 1.75rem;">Enter your passcode to manage RaheemDesign website.</p>
+      
+      <form id="loginForm">
+        <div style="margin-bottom: 1.25rem;">
+          <input type="password" id="passcodeInput" class="form-input" placeholder="Enter Passcode (Default: 123456)" style="text-align: center; font-size: 1.2rem; letter-spacing: 0.2em;" required autofocus>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">
+          <i class="fa-solid fa-right-to-bracket"></i> Unlock Dashboard
+        </button>
+      </form>
+      <div id="loginError" style="color: #ef4444; font-size: 0.9rem; margin-top: 1rem; display: none;">
+        Invalid passcode! Please try again.
+      </div>
+    </div>
+  </div>
+
+  <!-- EDIT SERVICE MODAL -->
+  <div id="editServiceModal" class="login-overlay" style="display: none;">
+    <div class="login-box">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <h3 style="font-size: 1.3rem; font-weight: 800; color: var(--primary, #82C22B);"><i class="fa-solid fa-pen-to-square"></i> Edit Service</h3>
+        <button type="button" class="btn btn-sm btn-secondary" onclick="closeModal('editServiceModal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form id="editServiceForm">
+        <input type="hidden" id="editServiceId">
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <label class="form-label">Service Title</label>
+          <input type="text" id="editServiceTitle" class="form-input" required>
+        </div>
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <label class="form-label">Description</label>
+          <textarea id="editServiceDesc" class="form-textarea" rows="3" required></textarea>
+        </div>
+        <div class="form-group" style="margin-bottom: 1.5rem;">
+          <label class="form-label">Icon HTML (e.g. &lt;i class="fa-solid fa-paintbrush"&gt;&lt;/i&gt;)</label>
+          <input type="text" id="editServiceIcon" class="form-input" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">
+          <i class="fa-solid fa-check"></i> Save Service Changes
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- EDIT PROJECT MODAL -->
+  <div id="editProjectModal" class="login-overlay" style="display: none;">
+    <div class="login-box">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <h3 style="font-size: 1.3rem; font-weight: 800; color: var(--primary, #82C22B);"><i class="fa-solid fa-pen-to-square"></i> Edit Portfolio Project</h3>
+        <button type="button" class="btn btn-sm btn-secondary" onclick="closeModal('editProjectModal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form id="editProjectForm">
+        <input type="hidden" id="editProjectId">
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <label class="form-label">Project Title</label>
+          <input type="text" id="editProjTitle" class="form-input" required>
+        </div>
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <label class="form-label">Category</label>
+          <select id="editProjCategory" class="form-select" required>
+            <option value="Business Websites">Business Websites</option>
+            <option value="E-Commerce">E-Commerce</option>
+            <option value="Academy Websites">Academy Websites</option>
+            <option value="Portfolio Websites">Portfolio Websites</option>
+            <option value="Landing Pages">Landing Pages</option>
+            <option value="Modern UI Designs">Modern UI Designs</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <label class="form-label">Image URL</label>
+          <input type="url" id="editProjImg" class="form-input" required>
+        </div>
+        <div class="form-group" style="margin-bottom: 1.5rem;">
+          <label class="form-label">Description</label>
+          <textarea id="editProjDesc" class="form-textarea" rows="3" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">
+          <i class="fa-solid fa-check"></i> Save Project Changes
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- EDIT REVIEW MODAL -->
+  <div id="editReviewModal" class="login-overlay" style="display: none;">
+    <div class="login-box">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <h3 style="font-size: 1.3rem; font-weight: 800; color: var(--primary, #82C22B);"><i class="fa-solid fa-pen-to-square"></i> Edit Client Review</h3>
+        <button type="button" class="btn btn-sm btn-secondary" onclick="closeModal('editReviewModal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form id="editReviewForm">
+        <input type="hidden" id="editReviewId">
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <label class="form-label">Client Name</label>
+          <input type="text" id="editRevName" class="form-input" required>
+        </div>
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <label class="form-label">Role / Company</label>
+          <input type="text" id="editRevRole" class="form-input" required>
+        </div>
+        <div class="form-group" style="margin-bottom: 1.5rem;">
+          <label class="form-label">Feedback Text</label>
+          <textarea id="editRevText" class="form-textarea" rows="3" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">
+          <i class="fa-solid fa-check"></i> Save Review Changes
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Admin Sidebar -->
+  <aside class="admin-sidebar" id="adminSidebar">
+    <div class="admin-sidebar-header">
+      <a href="index.html" target="_blank" class="logo" style="font-size: 1.2rem;">
+        <div class="logo-icon" style="width: 34px; height: 34px;">
+          <svg viewBox="0 0 24 24" width="20" height="20"><path fill="#0b0f19" d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/></svg>
+        </div>
+        <span>Raheem<span class="text-gradient">CMS</span></span>
+      </a>
+    </div>
+
+    <ul class="admin-nav">
+      <li class="admin-nav-item active" onclick="switchTab('overview', this)">
+        <i class="fa-solid fa-chart-pie"></i> Overview
+      </li>
+      <li class="admin-nav-item" onclick="switchTab('theme', this)">
+        <i class="fa-solid fa-palette"></i> Theme & Colors
+      </li>
+      <li class="admin-nav-item" onclick="switchTab('hero', this)">
+        <i class="fa-solid fa-heading"></i> Hero & Headlines
+      </li>
+      <li class="admin-nav-item" onclick="switchTab('about', this)">
+        <i class="fa-solid fa-user"></i> About Section
+      </li>
+      <li class="admin-nav-item" onclick="switchTab('services', this)">
+        <i class="fa-solid fa-gears"></i> Services Manager
+      </li>
+      <li class="admin-nav-item" onclick="switchTab('projects', this)">
+        <i class="fa-solid fa-briefcase"></i> Portfolio Projects
+      </li>
+      <li class="admin-nav-item" onclick="switchTab('packages', this)">
+        <i class="fa-solid fa-box-archive"></i> Services Packages
+      </li>
+      <li class="admin-nav-item" onclick="switchTab('reviews', this)">
+        <i class="fa-solid fa-star"></i> Client Reviews
+      </li>
+      <li class="admin-nav-item" onclick="switchTab('contact', this)">
+        <i class="fa-solid fa-address-book"></i> Contact & Map
+      </li>
+      <li class="admin-nav-item" onclick="switchTab('inbox', this)">
+        <i class="fa-solid fa-inbox"></i> Inbox Leads <span id="inboxBadge" class="scroll-indicator-badge" style="margin-left: auto; font-size: 0.7rem; padding: 0.2rem 0.6rem;">0</span>
+      </li>
+      <li class="admin-nav-item" onclick="switchTab('backup', this)">
+        <i class="fa-solid fa-database"></i> Backup & Reset
+      </li>
+    </ul>
+
+    <div class="admin-sidebar-footer">
+      <a href="index.html" target="_blank" class="btn btn-secondary" style="width: 100%; padding: 0.65rem 1rem; font-size: 0.9rem;">
+        <i class="fa-solid fa-globe"></i> View Live Site
+      </a>
+    </div>
+  </aside>
+
+  <!-- Admin Main Workspace -->
+  <main class="admin-main">
+    <header class="admin-header">
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <button class="btn btn-secondary btn-sm d-md-none" onclick="toggleSidebar()" style="padding: 0.6rem;">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+        <div>
+          <h1 id="pageTabTitle" style="font-size: 2rem; font-weight: 800;">Overview</h1>
+          <p style="color: #94a3b8; font-size: 0.95rem;">Live Web Content & CMS Control Center</p>
+        </div>
+      </div>
+      <div style="display: flex; gap: 1rem;">
+        <button class="btn btn-primary btn-sm" onclick="saveAllChanges()">
+          <i class="fa-solid fa-floppy-disk"></i> Save All Changes
+        </button>
+      </div>
+    </header>
+
+    <!-- Tab 1: Overview -->
+    <div id="tab-overview" class="tab-content active">
+      <div class="card-grid">
+        <div class="stat-card">
+          <div class="stat-icon"><i class="fa-solid fa-briefcase"></i></div>
+          <div>
+            <div id="statProjectsCount" style="font-size: 1.8rem; font-weight: 800; color: var(--primary, #82C22B);">0</div>
+            <div style="color: #94a3b8; font-size: 0.9rem;">Portfolio Projects</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon"><i class="fa-solid fa-gears"></i></div>
+          <div>
+            <div id="statServicesCount" style="font-size: 1.8rem; font-weight: 800; color: var(--primary, #82C22B);">0</div>
+            <div style="color: #94a3b8; font-size: 0.9rem;">Services Offered</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon"><i class="fa-solid fa-star"></i></div>
+          <div>
+            <div id="statReviewsCount" style="font-size: 1.8rem; font-weight: 800; color: var(--primary, #82C22B);">0</div>
+            <div style="color: #94a3b8; font-size: 0.9rem;">Client Reviews</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon"><i class="fa-solid fa-envelope"></i></div>
+          <div>
+            <div id="statInboxCount" style="font-size: 1.8rem; font-weight: 800; color: var(--primary, #82C22B);">0</div>
+            <div style="color: #94a3b8; font-size: 0.9rem;">Form Messages</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="admin-form-card">
+        <h3 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 1rem; color: var(--primary, #82C22B);">⚡ Live CMS Control Center</h3>
+        <ul style="color: #94a3b8; line-height: 1.8; margin-left: 1.25rem;">
+          <li>All edits made here immediately reflect on your live website (<a href="index.html" target="_blank" style="color: var(--primary, #82C22B);">index.html</a>).</li>
+          <li>Click the <strong>Edit</strong> button next to any Service, Project, or Review to update details live!</li>
+          <li>Customize site theme colors, edit hero text, stats, packages, and manage visitor messages easily.</li>
+          <li>Use the <strong>Backup & Reset</strong> tab anytime to download a JSON backup file of your site content.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Tab: Theme & Colors -->
+    <div id="tab-theme" class="tab-content">
+      <div class="admin-form-card">
+        <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 1rem;">Website Theme Accent Color</h3>
+        <p style="color: #94a3b8; font-size: 0.95rem; margin-bottom: 1.5rem;">Select a preset accent color or choose your custom HEX color to update the website appearance live.</p>
+
+        <!-- Live Color Preview Bar -->
+        <div style="margin-bottom: 1.5rem;">
+          <label class="form-label" style="margin-bottom: 0.5rem;">Current Active Color</label>
+          <div id="themePreviewBar" style="height: 48px; border-radius: 12px; background: #82C22B; display: flex; align-items: center; justify-content: center; font-weight: 700; color: #0b0f19; font-size: 1rem; transition: background 0.4s ease; cursor: pointer;" onclick="copyColorCode()">
+            <span id="themePreviewLabel">#82C22B &nbsp;— Click to Copy</span>
+          </div>
+        </div>
+
+        <label class="form-label" style="margin-bottom: 0.75rem;">Preset Accent Palettes</label>
+        <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2rem;">
+          <div class="color-pill" style="background: #82C22B;" title="Vibrant Lime Green" onclick="setThemeColor('#82C22B')"></div>
+          <div class="color-pill" style="background: #3B82F6;" title="Electric Blue" onclick="setThemeColor('#3B82F6')"></div>
+          <div class="color-pill" style="background: #8B5CF6;" title="Neon Purple" onclick="setThemeColor('#8B5CF6')"></div>
+          <div class="color-pill" style="background: #F59E0B;" title="Sunset Gold" onclick="setThemeColor('#F59E0B')"></div>
+          <div class="color-pill" style="background: #EF4444;" title="Crimson Red" onclick="setThemeColor('#EF4444')"></div>
+          <div class="color-pill" style="background: #06B6D4;" title="Cyan Teal" onclick="setThemeColor('#06B6D4')"></div>
+          <div class="color-pill" style="background: #10B981;" title="Emerald Green" onclick="setThemeColor('#10B981')"></div>
+          <div class="color-pill" style="background: #EC4899;" title="Hot Pink" onclick="setThemeColor('#EC4899')"></div>
+          <div class="color-pill" style="background: #F97316;" title="Orange" onclick="setThemeColor('#F97316')"></div>
+          <div class="color-pill" style="background: #A855F7;" title="Violet" onclick="setThemeColor('#A855F7')"></div>
+        </div>
+
+        <form id="themeColorForm" style="display: flex; align-items: center; gap: 1rem; max-width: 400px;">
+          <div style="flex-grow: 1;">
+            <label class="form-label">Custom HEX Color Code</label>
+            <input type="color" id="themeColorPicker" style="width: 100%; height: 42px; padding: 0.2rem; background: #000; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; cursor: pointer;">
+          </div>
+          <button type="submit" class="btn btn-primary" style="margin-top: 1.5rem;">
+            <i class="fa-solid fa-check"></i> Apply Color
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Tab 2: Hero & Headlines -->
+    <div id="tab-hero" class="tab-content">
+      <div class="admin-form-card">
+        <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 1.5rem;">Hero Section Main Content</h3>
+        <form id="heroForm">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem;">
+            <div>
+              <label class="form-label">Hero Badge Tag</label>
+              <input type="text" id="heroTag" class="form-input" required>
+            </div>
+            <div>
+              <label class="form-label">Primary Button Text</label>
+              <input type="text" id="heroPrimaryBtn" class="form-input" required>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem;">
+            <div>
+              <label class="form-label">Main Headline Start</label>
+              <input type="text" id="heroMain" class="form-input" required>
+            </div>
+            <div>
+              <label class="form-label">Gradient Text Highlight</label>
+              <input type="text" id="heroGradient" class="form-input" required>
+            </div>
+            <div>
+              <label class="form-label">Headline End</label>
+              <input type="text" id="heroEnd" class="form-input" required>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 1.5rem;">
+            <label class="form-label">Subtext Description</label>
+            <textarea id="heroSubtext" class="form-textarea" rows="3" required></textarea>
+          </div>
+
+          <h4 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem; color: var(--primary, #82C22B);">Hero Live Statistics Counter</h4>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+            <div>
+              <label class="form-label">Stat 1 Number</label>
+              <input type="text" id="stat1Num" class="form-input" placeholder="100+">
+            </div>
+            <div>
+              <label class="form-label">Stat 1 Label</label>
+              <input type="text" id="stat1Lbl" class="form-input" placeholder="Websites Designed">
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+            <div>
+              <label class="form-label">Stat 2 Number</label>
+              <input type="text" id="stat2Num" class="form-input" placeholder="99%">
+            </div>
+            <div>
+              <label class="form-label">Stat 2 Label</label>
+              <input type="text" id="stat2Lbl" class="form-input" placeholder="Client Satisfaction">
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+            <div>
+              <label class="form-label">Stat 3 Number</label>
+              <input type="text" id="stat3Num" class="form-input" placeholder="100%">
+            </div>
+            <div>
+              <label class="form-label">Stat 3 Label</label>
+              <input type="text" id="stat3Lbl" class="form-input" placeholder="Responsive Layouts">
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary">
+            <i class="fa-solid fa-check"></i> Save Hero Content
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Tab: About Section -->
+    <div id="tab-about" class="tab-content">
+      <div class="admin-form-card">
+        <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 1.5rem;">About Raheem Section</h3>
+        <form id="aboutForm">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem;">
+            <div>
+              <label class="form-label">Section Tag</label>
+              <input type="text" id="aboutTagVal" class="form-input" required>
+            </div>
+            <div>
+              <label class="form-label">Section Title</label>
+              <input type="text" id="aboutTitleVal" class="form-input" required>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 1.5rem;">
+            <label class="form-label">About Biography / Description</label>
+            <textarea id="aboutTextVal" class="form-textarea" rows="4" required></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary">
+            <i class="fa-solid fa-check"></i> Update About Section
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Tab 3: Services Manager -->
+    <div id="tab-services" class="tab-content">
+      <div class="admin-form-card">
+        <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 1.5rem;">Add New Service</h3>
+        <form id="addServiceForm" style="display: grid; grid-template-columns: 1fr 2fr auto; gap: 1rem; align-items: flex-end;">
+          <div>
+            <label class="form-label">Service Title</label>
+            <input type="text" id="newServiceTitle" class="form-input" placeholder="e.g. Mobile App Design" required>
+          </div>
+          <div>
+            <label class="form-label">Description</label>
+            <input type="text" id="newServiceDesc" class="form-input" placeholder="Short service details..." required>
+          </div>
+          <button type="submit" class="btn btn-primary">
+            <i class="fa-solid fa-plus"></i> Add Service
+          </button>
+        </form>
+      </div>
+
+      <div class="table-search-bar">
+        <input type="text" id="searchServicesInput" class="form-input" placeholder="🔍 Search Services by name or description..." onkeyup="filterServices(this.value)">
+      </div>
+
+      <div class="table-container">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Description</th>
+              <th style="width: 160px;">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="servicesTableBody">
+            <!-- Dynamic Services Rows -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Tab 4: Portfolio Projects Manager -->
+    <div id="tab-projects" class="tab-content">
+      <div class="admin-form-card">
+        <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 1.5rem;">Add New Portfolio Project</h3>
+        <form id="addProjectForm">
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem;">
+            <div>
+              <label class="form-label">Project Title *</label>
+              <input type="text" id="projTitle" class="form-input" placeholder="e.g. Horizon Corporate Site" required>
+            </div>
+            <div>
+              <label class="form-label">Category *</label>
+              <select id="projCategory" class="form-select" required>
+                <option value="Business Websites">Business Websites</option>
+                <option value="E-Commerce">E-Commerce</option>
+                <option value="Academy Websites">Academy Websites</option>
+                <option value="Portfolio Websites">Portfolio Websites</option>
+                <option value="Landing Pages">Landing Pages</option>
+                <option value="Modern UI Designs">Modern UI Designs</option>
+              </select>
+            </div>
+            <div>
+              <label class="form-label">Image URL *</label>
+              <input type="url" id="projImg" class="form-input" placeholder="https://images.unsplash.com/..." required>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 1.5rem;">
+            <label class="form-label">Description *</label>
+            <input type="text" id="projDesc" class="form-input" placeholder="Short project summary..." required>
+          </div>
+
+          <button type="submit" class="btn btn-primary">
+            <i class="fa-solid fa-plus"></i> Add Project
+          </button>
+        </form>
+      </div>
+
+      <div class="table-search-bar">
+        <input type="text" id="searchProjectsInput" class="form-input" placeholder="🔍 Search Projects by title or category..." onkeyup="filterProjects(this.value)">
+      </div>
+
+      <div class="table-container">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Preview</th>
+              <th>Title</th>
+              <th>Category</th>
+              <th>Description</th>
+              <th style="width: 160px;">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="projectsTableBody">
+            <!-- Dynamic Projects Rows -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Tab 5: Services Packages -->
+    <div id="tab-packages" class="tab-content">
+      <div class="admin-form-card">
+        <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 1.5rem;">Edit Services Packages (Silver, Golden, Diamond)</h3>
+        <div id="packagesContainer" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+          <!-- Dynamic Packages Cards -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 6: Client Reviews -->
+    <div id="tab-reviews" class="tab-content">
+      <div class="admin-form-card">
+        <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 1.5rem;">Add Client Review</h3>
+        <form id="addReviewForm" style="display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 1rem; align-items: flex-end;">
+          <div>
+            <label class="form-label">Client Name</label>
+            <input type="text" id="revName" class="form-input" placeholder="e.g. Ali Raza" required>
+          </div>
+          <div>
+            <label class="form-label">Role / Company</label>
+            <input type="text" id="revRole" class="form-input" placeholder="e.g. Owner, Cafe Delight" required>
+          </div>
+          <div>
+            <label class="form-label">Feedback</label>
+            <input type="text" id="revText" class="form-input" placeholder="Client comments..." required>
+          </div>
+          <button type="submit" class="btn btn-primary">
+            <i class="fa-solid fa-plus"></i> Add Review
+          </button>
+        </form>
+      </div>
+
+      <div class="table-container">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Client Name</th>
+              <th>Role</th>
+              <th>Feedback</th>
+              <th style="width: 160px;">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="reviewsTableBody">
+            <!-- Dynamic Reviews Rows -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Tab 7: Contact & Map Settings -->
+    <div id="tab-contact" class="tab-content">
+      <div class="admin-form-card">
+        <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 1.5rem;">Contact & Location Settings</h3>
+        <form id="contactSettingsForm">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem;">
+            <div>
+              <label class="form-label">WhatsApp Number</label>
+              <input type="text" id="cntWhatsApp" class="form-input" required>
+            </div>
+            <div>
+              <label class="form-label">Official Email</label>
+              <input type="email" id="cntEmail" class="form-input" required>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 1.25rem;">
+            <label class="form-label">Physical Address / Location</label>
+            <input type="text" id="cntAddress" class="form-input" required>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 1.5rem;">
+            <label class="form-label">Google Maps Embed URL</label>
+            <input type="url" id="cntMapUrl" class="form-input" required>
+          </div>
+
+          <button type="submit" class="btn btn-primary">
+            <i class="fa-solid fa-check"></i> Update Contact Settings
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Tab 8: Inbox Leads -->
+    <div id="tab-inbox" class="tab-content">
+      <div class="table-container">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Name</th>
+              <th>Phone</th>
+              <th>Email</th>
+              <th>Service Required</th>
+              <th>Details</th>
+              <th style="width: 80px;">Action</th>
+            </tr>
+          </thead>
+          <tbody id="inboxTableBody">
+            <!-- Dynamic Inbox Rows -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Tab 9: Backup & Reset -->
+    <div id="tab-backup" class="tab-content">
+      <div class="admin-form-card">
+        <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 1rem;">Export / Import JSON Data</h3>
+        <p style="color: #94a3b8; margin-bottom: 1.5rem;">Download a complete backup file of your website content or restore previous backups anytime.</p>
+        
+        <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2rem;">
+          <button class="btn btn-secondary" onclick="exportBackupJSON()">
+            <i class="fa-solid fa-download"></i> Export Backup JSON
+          </button>
+          <label class="btn btn-primary" style="cursor: pointer;">
+            <i class="fa-solid fa-upload"></i> Import Backup JSON
+            <input type="file" id="importFileInput" accept=".json" style="display: none;" onchange="importBackupJSON(event)">
+          </label>
+          <button class="btn btn-danger" onclick="resetToFactoryDefaults()">
+            <i class="fa-solid fa-rotate-left"></i> Reset to Factory Defaults
+          </button>
+        </div>
+
+        <hr style="border-color: rgba(255,255,255,0.08); margin: 2rem 0;">
+
+        <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 1rem;">Change Admin Passcode</h3>
+        <form id="changePasscodeForm" style="display: grid; grid-template-columns: 1fr 1fr auto; gap: 1rem; align-items: flex-end;">
+          <div>
+            <label class="form-label">New Passcode</label>
+            <input type="password" id="newPasscodeVal" class="form-input" placeholder="New Passcode..." required>
+          </div>
+          <div>
+            <label class="form-label">Confirm Passcode</label>
+            <input type="password" id="confirmPasscodeVal" class="form-input" placeholder="Confirm Passcode..." required>
+          </div>
+          <button type="submit" class="btn btn-primary">
+            <i class="fa-solid fa-key"></i> Update Passcode
+          </button>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <!-- JS Dependencies -->
+  <script src="js/cms.js"></script>
+  <script>
+    let currentCMSData = getCMSData();
+
+    // Toggle Mobile Sidebar
+    function toggleSidebar() {
+      document.getElementById('adminSidebar').classList.toggle('mobile-open');
+    }
+
+    // Check Login Auth
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const entered = document.getElementById('passcodeInput').value;
+      const savedPass = localStorage.getItem(CMS_PASSCODE_KEY) || '123456';
+      if (entered === savedPass) {
+        document.getElementById('loginOverlay').style.display = 'none';
+        initAdminView();
+      } else {
+        document.getElementById('loginError').style.display = 'block';
+      }
+    });
+
+    // Tab Switcher
+    function switchTab(tabId, el) {
+      document.querySelectorAll('.tab-content').forEach(item => item.classList.remove('active'));
+      document.querySelectorAll('.admin-nav-item').forEach(item => item.classList.remove('active'));
+      
+      document.getElementById('tab-' + tabId).classList.add('active');
+      if (el) el.classList.add('active');
+      
+      const titleMap = {
+        overview: "Overview",
+        theme: "Theme & Colors Customizer",
+        hero: "Hero & Headlines",
+        about: "About Section Manager",
+        services: "Services Manager",
+        projects: "Portfolio Projects",
+        packages: "Services Packages",
+        reviews: "Client Reviews",
+        contact: "Contact & Map Settings",
+        inbox: "Visitor Inbox Leads",
+        backup: "Backup & Reset"
+      };
+      document.getElementById('pageTabTitle').textContent = titleMap[tabId] || "Dashboard";
+
+      // Close mobile sidebar if open
+      document.getElementById('adminSidebar').classList.remove('mobile-open');
+    }
+
+    function closeModal(modalId) {
+      document.getElementById(modalId).style.display = 'none';
+    }
+
+    // Initialize Admin Interface Data
+    function initAdminView() {
+      currentCMSData = getCMSData();
+      
+      // Theme Color
+      document.getElementById('themeColorPicker').value = currentCMSData.themeColor || "#82C22B";
+      applyAdminThemeColor(currentCMSData.themeColor || "#82C22B");
+
+      // Overview stats
+      document.getElementById('statProjectsCount').textContent = currentCMSData.projects.length;
+      document.getElementById('statServicesCount').textContent = currentCMSData.services.length;
+      document.getElementById('statReviewsCount').textContent = (currentCMSData.reviews || []).length;
+      const inbox = getInboxMessages();
+      document.getElementById('statInboxCount').textContent = inbox.length;
+      document.getElementById('inboxBadge').textContent = inbox.length;
+
+      // Populate Hero
+      if (currentCMSData.hero) {
+        document.getElementById('heroTag').value = currentCMSData.hero.tag || "";
+        document.getElementById('heroMain').value = currentCMSData.hero.headlineMain || "";
+        document.getElementById('heroGradient').value = currentCMSData.hero.headlineGradient || "";
+        document.getElementById('heroEnd').value = currentCMSData.hero.headlineEnd || "";
+        document.getElementById('heroSubtext').value = currentCMSData.hero.subtext || "";
+        document.getElementById('heroPrimaryBtn').value = currentCMSData.hero.primaryBtnText || "";
+
+        // Populate Hero Stats
+        const stats = currentCMSData.hero.stats || [];
+        document.getElementById('stat1Num').value = stats[0] ? stats[0].number : "100+";
+        document.getElementById('stat1Lbl').value = stats[0] ? stats[0].label : "Websites Designed";
+        document.getElementById('stat2Num').value = stats[1] ? stats[1].number : "99%";
+        document.getElementById('stat2Lbl').value = stats[1] ? stats[1].label : "Client Satisfaction";
+        document.getElementById('stat3Num').value = stats[2] ? stats[2].number : "100%";
+        document.getElementById('stat3Lbl').value = stats[2] ? stats[2].label : "Responsive Layouts";
+      }
+
+      // Populate About
+      if (currentCMSData.about) {
+        document.getElementById('aboutTagVal').value = currentCMSData.about.tag || "Who I Am";
+        document.getElementById('aboutTitleVal').value = currentCMSData.about.title || "About Raheem";
+        document.getElementById('aboutTextVal').value = currentCMSData.about.text || "";
+      }
+
+      // Render Tables & Lists
+      renderServicesTable();
+      renderProjectsTable();
+      renderPackagesCards();
+      renderReviewsTable();
+      renderContactSettings();
+      renderInboxTable();
+    }
+
+    // Helper: HEX to RGBA
+    function hexToRgba(hex, alpha) {
+      const r = parseInt(hex.slice(1, 3), 16);
+      const g = parseInt(hex.slice(3, 5), 16);
+      const b = parseInt(hex.slice(5, 7), 16);
+      return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+    }
+
+    // Apply color to Admin Dashboard page itself
+    function applyAdminThemeColor(hex) {
+      const root = document.documentElement;
+      root.style.setProperty('--primary', hex);
+      root.style.setProperty('--primary-hover', hex);
+      root.style.setProperty('--accent', hex);
+      root.style.setProperty('--accent-glow', hexToRgba(hex, 0.15));
+      root.style.setProperty('--primary-glow', hexToRgba(hex, 0.3));
+      root.style.setProperty('--border-hover', hexToRgba(hex, 0.5));
+
+      // Update preview bar
+      const bar = document.getElementById('themePreviewBar');
+      const label = document.getElementById('themePreviewLabel');
+      if (bar) bar.style.background = hex;
+      if (label) label.textContent = `${hex} \u00a0— Click to Copy`;
+    }
+
+    function copyColorCode() {
+      const label = document.getElementById('themePreviewLabel');
+      if (!label) return;
+      const hex = label.textContent.split('\u00a0')[0].trim();
+      navigator.clipboard.writeText(hex).then(() => {
+        showAdminToast(`Color ${hex} copied to clipboard!`);
+      }).catch(() => {
+        showAdminToast(`Current color: ${hex}`);
+      });
+    }
+
+    function showAdminToast(msg) {
+      let toast = document.getElementById('adminToast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'adminToast';
+        toast.style.cssText = `
+          position: fixed; bottom: 2rem; right: 2rem;
+          background: var(--primary, #82C22B); color: #0b0f19;
+          padding: 0.85rem 1.5rem; border-radius: 12px;
+          font-weight: 700; font-size: 0.95rem;
+          z-index: 99999; opacity: 0;
+          transition: opacity 0.3s ease;
+          box-shadow: 0 8px 25px var(--primary-glow, rgba(130,194,43,0.3));
+        `;
+        document.body.appendChild(toast);
+      }
+      toast.textContent = msg;
+      toast.style.opacity = '1';
+      clearTimeout(toast._timer);
+      toast._timer = setTimeout(() => { toast.style.opacity = '0'; }, 2500);
+    }
+
+    // Theme Color Controller
+    function setThemeColor(hex) {
+      currentCMSData.themeColor = hex;
+      document.getElementById('themeColorPicker').value = hex;
+      saveCMSData(currentCMSData);
+      applyAdminThemeColor(hex);
+      showAdminToast(`✅ Theme color updated to ${hex}!`);
+    }
+
+    document.getElementById('themeColorForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const hex = document.getElementById('themeColorPicker').value;
+      setThemeColor(hex);
+    });
+
+    // About Form Update
+    document.getElementById('aboutForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      currentCMSData.about.tag = document.getElementById('aboutTagVal').value;
+      currentCMSData.about.title = document.getElementById('aboutTitleVal').value;
+      currentCMSData.about.text = document.getElementById('aboutTextVal').value;
+      saveCMSData(currentCMSData);
+      showAdminToast("✅ About Section updated successfully!");
+    });
+
+    // ═══════════════════════════════════════════════════
+    // SERVICES MANAGER (ADD, EDIT, DELETE & SEARCH)
+    // ═══════════════════════════════════════════════════
+    function renderServicesTable(filteredList) {
+      const tbody = document.getElementById('servicesTableBody');
+      const list = filteredList || currentCMSData.services;
+      
+      if (list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:#94a3b8; padding:1.5rem;">No services found.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = list.map(s => `
+        <tr>
+          <td><strong>${s.title}</strong></td>
+          <td>${s.desc}</td>
+          <td>
+            <div class="table-actions">
+              <button class="btn btn-primary btn-sm" onclick="openEditServiceModal(${s.id})"><i class="fa-solid fa-pen-to-square"></i> Edit</button>
+              <button class="btn btn-danger btn-sm" onclick="deleteService(${s.id})"><i class="fa-solid fa-trash"></i></button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function filterServices(query) {
+      const q = query.toLowerCase();
+      const filtered = currentCMSData.services.filter(s => s.title.toLowerCase().includes(q) || s.desc.toLowerCase().includes(q));
+      renderServicesTable(filtered);
+    }
+
+    document.getElementById('addServiceForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const newS = {
+        id: Date.now(),
+        title: document.getElementById('newServiceTitle').value,
+        desc: document.getElementById('newServiceDesc').value,
+        iconSvg: `<i class="fa-solid fa-paintbrush"></i>`
+      };
+      currentCMSData.services.push(newS);
+      saveCMSData(currentCMSData);
+      initAdminView();
+      showAdminToast("✅ Service added successfully!");
+      document.getElementById('addServiceForm').reset();
+    });
+
+    function openEditServiceModal(id) {
+      const s = currentCMSData.services.find(item => item.id === id);
+      if (!s) return;
+      document.getElementById('editServiceId').value = s.id;
+      document.getElementById('editServiceTitle').value = s.title;
+      document.getElementById('editServiceDesc').value = s.desc;
+      document.getElementById('editServiceIcon').value = s.iconSvg || `<i class="fa-solid fa-paintbrush"></i>`;
+      document.getElementById('editServiceModal').style.display = 'flex';
+    }
+
+    document.getElementById('editServiceForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const id = parseInt(document.getElementById('editServiceId').value);
+      const s = currentCMSData.services.find(item => item.id === id);
+      if (s) {
+        s.title = document.getElementById('editServiceTitle').value;
+        s.desc = document.getElementById('editServiceDesc').value;
+        s.iconSvg = document.getElementById('editServiceIcon').value;
+        saveCMSData(currentCMSData);
+        initAdminView();
+        closeModal('editServiceModal');
+        showAdminToast("✅ Service updated successfully!");
+      }
+    });
+
+    function deleteService(id) {
+      if (confirm("Are you sure you want to delete this service?")) {
+        currentCMSData.services = currentCMSData.services.filter(s => s.id !== id);
+        saveCMSData(currentCMSData);
+        initAdminView();
+        showAdminToast("Service deleted.");
+      }
+    }
+
+    // ═══════════════════════════════════════════════════
+    // PROJECTS MANAGER (ADD, EDIT, DELETE & SEARCH)
+    // ═══════════════════════════════════════════════════
+    function renderProjectsTable(filteredList) {
+      const tbody = document.getElementById('projectsTableBody');
+      const list = filteredList || currentCMSData.projects;
+
+      if (list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#94a3b8; padding:1.5rem;">No portfolio projects found.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = list.map(p => `
+        <tr>
+          <td><img src="${p.imgUrl}" alt="${p.title}" style="width: 52px; height: 36px; object-fit: cover; border-radius: 6px;"></td>
+          <td><strong>${p.title}</strong></td>
+          <td><span class="scroll-indicator-badge" style="font-size: 0.75rem;">${p.category}</span></td>
+          <td>${p.desc}</td>
+          <td>
+            <div class="table-actions">
+              <button class="btn btn-primary btn-sm" onclick="openEditProjectModal(${p.id})"><i class="fa-solid fa-pen-to-square"></i> Edit</button>
+              <button class="btn btn-danger btn-sm" onclick="deleteProject(${p.id})"><i class="fa-solid fa-trash"></i></button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function filterProjects(query) {
+      const q = query.toLowerCase();
+      const filtered = currentCMSData.projects.filter(p => p.title.toLowerCase().includes(q) || p.category.toLowerCase().includes(q));
+      renderProjectsTable(filtered);
+    }
+
+    document.getElementById('addProjectForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const newP = {
+        id: Date.now(),
+        title: document.getElementById('projTitle').value,
+        category: document.getElementById('projCategory').value,
+        imgUrl: document.getElementById('projImg').value,
+        desc: document.getElementById('projDesc').value,
+        features: ["Modern UI Design", "100% Responsive Layout", "Fast Page Load Speed", "Lead Capture Ready"]
+      };
+      currentCMSData.projects.unshift(newP);
+      saveCMSData(currentCMSData);
+      initAdminView();
+      showAdminToast("✅ Portfolio project added!");
+      document.getElementById('addProjectForm').reset();
+    });
+
+    function openEditProjectModal(id) {
+      const p = currentCMSData.projects.find(item => item.id === id);
+      if (!p) return;
+      document.getElementById('editProjectId').value = p.id;
+      document.getElementById('editProjTitle').value = p.title;
+      document.getElementById('editProjCategory').value = p.category;
+      document.getElementById('editProjImg').value = p.imgUrl;
+      document.getElementById('editProjDesc').value = p.desc;
+      document.getElementById('editProjectModal').style.display = 'flex';
+    }
+
+    document.getElementById('editProjectForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const id = parseInt(document.getElementById('editProjectId').value);
+      const p = currentCMSData.projects.find(item => item.id === id);
+      if (p) {
+        p.title = document.getElementById('editProjTitle').value;
+        p.category = document.getElementById('editProjCategory').value;
+        p.imgUrl = document.getElementById('editProjImg').value;
+        p.desc = document.getElementById('editProjDesc').value;
+        saveCMSData(currentCMSData);
+        initAdminView();
+        closeModal('editProjectModal');
+        showAdminToast("✅ Project updated successfully!");
+      }
+    });
+
+    function deleteProject(id) {
+      if (confirm("Are you sure you want to delete this portfolio project?")) {
+        currentCMSData.projects = currentCMSData.projects.filter(p => p.id !== id);
+        saveCMSData(currentCMSData);
+        initAdminView();
+        showAdminToast("Project deleted.");
+      }
+    }
+
+    // Packages Manager
+    function renderPackagesCards() {
+      const container = document.getElementById('packagesContainer');
+      container.innerHTML = currentCMSData.packages.map((pkg, idx) => `
+        <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 1.5rem; border-radius: 14px;">
+          <div style="font-size: 0.8rem; color: var(--primary, #82C22B); font-weight: 700; margin-bottom: 0.5rem;">${pkg.tag}</div>
+          <h4 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 1rem;">${pkg.name} Package</h4>
+          <div class="form-group" style="margin-bottom: 1rem;">
+            <label class="form-label">Button Action Text</label>
+            <input type="text" class="form-input" value="${pkg.btnText}" onchange="updatePackageBtn(${idx}, this.value)">
+          </div>
+          <label class="form-label">Package Features</label>
+          ${pkg.features.map((f, fIdx) => `
+            <input type="text" class="form-input" style="margin-bottom: 0.5rem;" value="${f}" onchange="updatePackageFeature(${idx}, ${fIdx}, this.value)">
+          `).join('')}
+        </div>
+      `).join('');
+    }
+
+    function updatePackageBtn(pkgIdx, val) {
+      currentCMSData.packages[pkgIdx].btnText = val;
+      saveCMSData(currentCMSData);
+      showAdminToast("Package updated.");
+    }
+
+    function updatePackageFeature(pkgIdx, featureIdx, val) {
+      currentCMSData.packages[pkgIdx].features[featureIdx] = val;
+      saveCMSData(currentCMSData);
+      showAdminToast("Package feature updated.");
+    }
+
+    // ═══════════════════════════════════════════════════
+    // REVIEWS MANAGER (ADD, EDIT & DELETE)
+    // ═══════════════════════════════════════════════════
+    function renderReviewsTable() {
+      const tbody = document.getElementById('reviewsTableBody');
+      const reviews = currentCMSData.reviews || [];
+      if (reviews.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#94a3b8; padding:1.5rem;">No client reviews added yet.</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = reviews.map(r => `
+        <tr>
+          <td><strong>${r.clientName}</strong></td>
+          <td>${r.clientRole}</td>
+          <td>"${r.text}"</td>
+          <td>
+            <div class="table-actions">
+              <button class="btn btn-primary btn-sm" onclick="openEditReviewModal(${r.id})"><i class="fa-solid fa-pen-to-square"></i> Edit</button>
+              <button class="btn btn-danger btn-sm" onclick="deleteReview(${r.id})"><i class="fa-solid fa-trash"></i></button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    document.getElementById('addReviewForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      if (!currentCMSData.reviews) currentCMSData.reviews = [];
+      const newR = {
+        id: Date.now(),
+        clientName: document.getElementById('revName').value,
+        clientRole: document.getElementById('revRole').value,
+        rating: 5,
+        text: document.getElementById('revText').value
+      };
+      currentCMSData.reviews.unshift(newR);
+      saveCMSData(currentCMSData);
+      initAdminView();
+      showAdminToast("✅ Client Review added!");
+      document.getElementById('addReviewForm').reset();
+    });
+
+    function openEditReviewModal(id) {
+      const r = currentCMSData.reviews.find(item => item.id === id);
+      if (!r) return;
+      document.getElementById('editReviewId').value = r.id;
+      document.getElementById('editRevName').value = r.clientName;
+      document.getElementById('editRevRole').value = r.clientRole;
+      document.getElementById('editRevText').value = r.text;
+      document.getElementById('editReviewModal').style.display = 'flex';
+    }
+
+    document.getElementById('editReviewForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const id = parseInt(document.getElementById('editReviewId').value);
+      const r = currentCMSData.reviews.find(item => item.id === id);
+      if (r) {
+        r.clientName = document.getElementById('editRevName').value;
+        r.clientRole = document.getElementById('editRevRole').value;
+        r.text = document.getElementById('editRevText').value;
+        saveCMSData(currentCMSData);
+        initAdminView();
+        closeModal('editReviewModal');
+        showAdminToast("✅ Client Review updated!");
+      }
+    });
+
+    function deleteReview(id) {
+      if (confirm("Are you sure you want to delete this review?")) {
+        currentCMSData.reviews = currentCMSData.reviews.filter(r => r.id !== id);
+        saveCMSData(currentCMSData);
+        initAdminView();
+        showAdminToast("Review deleted.");
+      }
+    }
+
+    // Contact Settings
+    function renderContactSettings() {
+      document.getElementById('cntWhatsApp').value = currentCMSData.contact.whatsappNumber;
+      document.getElementById('cntEmail').value = currentCMSData.contact.email;
+      document.getElementById('cntAddress').value = currentCMSData.contact.address;
+      document.getElementById('cntMapUrl').value = currentCMSData.contact.mapEmbedUrl;
+    }
+
+    document.getElementById('contactSettingsForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      currentCMSData.contact.whatsappNumber = document.getElementById('cntWhatsApp').value;
+      currentCMSData.contact.whatsappClean = document.getElementById('cntWhatsApp').value.replace(/[^0-9]/g, '');
+      currentCMSData.contact.email = document.getElementById('cntEmail').value;
+      currentCMSData.contact.address = document.getElementById('cntAddress').value;
+      currentCMSData.contact.mapEmbedUrl = document.getElementById('cntMapUrl').value;
+      
+      saveCMSData(currentCMSData);
+      showAdminToast("✅ Contact settings updated successfully!");
+    });
+
+    // Hero Form Update
+    document.getElementById('heroForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      currentCMSData.hero.tag = document.getElementById('heroTag').value;
+      currentCMSData.hero.headlineMain = document.getElementById('heroMain').value;
+      currentCMSData.hero.headlineGradient = document.getElementById('heroGradient').value;
+      currentCMSData.hero.headlineEnd = document.getElementById('heroEnd').value;
+      currentCMSData.hero.subtext = document.getElementById('heroSubtext').value;
+      currentCMSData.hero.primaryBtnText = document.getElementById('heroPrimaryBtn').value;
+
+      // Stats Update
+      currentCMSData.hero.stats = [
+        { number: document.getElementById('stat1Num').value || "100+", label: document.getElementById('stat1Lbl').value || "Websites Designed" },
+        { number: document.getElementById('stat2Num').value || "99%", label: document.getElementById('stat2Lbl').value || "Client Satisfaction" },
+        { number: document.getElementById('stat3Num').value || "100%", label: document.getElementById('stat3Lbl').value || "Responsive Layouts" }
+      ];
+      
+      saveCMSData(currentCMSData);
+      showAdminToast("✅ Hero content & stats updated successfully!");
+    });
+
+    // Inbox Manager
+    function renderInboxTable() {
+      const tbody = document.getElementById('inboxTableBody');
+      const messages = getInboxMessages();
+      if (messages.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: #94a3b8; padding: 2rem;">No visitor messages received yet.</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = messages.map(m => `
+        <tr>
+          <td><small style="color: #94a3b8;">${m.date}</small></td>
+          <td><strong>${m.name}</strong></td>
+          <td>${m.phone}</td>
+          <td>${m.email}</td>
+          <td><span class="scroll-indicator-badge">${m.service}</span></td>
+          <td>${m.details}</td>
+          <td>
+            <button class="btn btn-danger btn-sm" onclick="removeInboxMsg(${m.id})"><i class="fa-solid fa-trash"></i></button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function removeInboxMsg(id) {
+      if (confirm("Delete this message?")) {
+        deleteInboxMessage(id);
+        initAdminView();
+        showAdminToast("Inbox message removed.");
+      }
+    }
+
+    // Save All
+    function saveAllChanges() {
+      saveCMSData(currentCMSData);
+      showAdminToast("🎉 All website changes saved live!");
+    }
+
+    // Export / Import Backup JSON
+    function exportBackupJSON() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(currentCMSData, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", "raheemdesign_cms_backup.json");
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    }
+
+    function importBackupJSON(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const imported = JSON.parse(e.target.result);
+          saveCMSData(imported);
+          initAdminView();
+          showAdminToast("✅ Backup data imported successfully!");
+        } catch (err) {
+          alert("Invalid JSON backup file!");
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function resetToFactoryDefaults() {
+      if (confirm("Are you sure you want to reset all content to factory defaults? Any custom edits will be restored to initial defaults.")) {
+        localStorage.removeItem(CMS_STORAGE_KEY);
+        initAdminView();
+        showAdminToast("Reset complete.");
+      }
+    }
+
+    // Change Passcode
+    document.getElementById('changePasscodeForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const p1 = document.getElementById('newPasscodeVal').value;
+      const p2 = document.getElementById('confirmPasscodeVal').value;
+      if (p1 !== p2) {
+        alert("Passcodes do not match!");
+        return;
+      }
+      localStorage.setItem(CMS_PASSCODE_KEY, p1);
+      showAdminToast("✅ Admin passcode updated successfully!");
+      document.getElementById('changePasscodeForm').reset();
+    });
+  </script>
+</body>
+</html>
