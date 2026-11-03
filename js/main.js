@@ -14,9 +14,13 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ═══════════════════════════════════════════════════
-  // MOUSE GLOW CURSOR EFFECT
+  // MOUSE GLOW CURSOR EFFECT (Desktop Only)
   // ═══════════════════════════════════════════════════
-  initMouseGlowEffect();
+  // Disable fake cursor on touch/mobile devices
+  const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || window.innerWidth <= 768;
+  if (!isTouchDevice) {
+    initMouseGlowEffect();
+  }
 
   function initMouseGlowEffect() {
     // Create cursor glow orb
@@ -125,21 +129,25 @@ document.addEventListener('DOMContentLoaded', () => {
     root.style.setProperty('--primary', colorHex);
     root.style.setProperty('--primary-hover', colorHex);
     root.style.setProperty('--accent', colorHex);
-    root.style.setProperty('--gradient-accent', `linear-gradient(135deg, ${colorHex} 0%, #e8f5c8 100%)`);
-    root.style.setProperty('--accent-glow', hexToRgba(colorHex, 0.15));
-    root.style.setProperty('--primary-glow', hexToRgba(colorHex, 0.3));
-    root.style.setProperty('--shadow-glow', `0 0 25px ${hexToRgba(colorHex, 0.3)}`);
-    root.style.setProperty('--border-hover', hexToRgba(colorHex, 0.5));
+    root.style.setProperty('--gradient-accent', `linear-gradient(135deg, ${colorHex} 0%, #ffffff 100%)`);
+    root.style.setProperty('--accent-glow', hexToRgba(colorHex, 0.25));
+    root.style.setProperty('--primary-glow', hexToRgba(colorHex, 0.4));
+    root.style.setProperty('--shadow-glow', `0 0 30px ${hexToRgba(colorHex, 0.4)}`);
+    root.style.setProperty('--border-hover', hexToRgba(colorHex, 0.65));
 
-    // Also update cursor glow elements in real-time if they exist
+    // Also update cursor glow and dot in real-time
     const cursorDot = document.getElementById('cursor-dot');
     const cursorRing = document.getElementById('cursor-ring');
+    const cursorGlow = document.getElementById('cursor-glow');
     if (cursorDot) {
       cursorDot.style.background = colorHex;
-      cursorDot.style.boxShadow = `0 0 12px ${colorHex}, 0 0 25px ${hexToRgba(colorHex, 0.4)}`;
+      cursorDot.style.boxShadow = `0 0 12px ${colorHex}, 0 0 25px ${hexToRgba(colorHex, 0.5)}`;
     }
     if (cursorRing) {
       cursorRing.style.borderColor = colorHex;
+    }
+    if (cursorGlow) {
+      cursorGlow.style.background = `radial-gradient(circle, ${hexToRgba(colorHex, 0.35)} 0%, transparent 70%)`;
     }
   }
 
