@@ -12,25 +12,37 @@ files.forEach(file => {
   if (!fs.existsSync(filePath)) return;
   let html = fs.readFileSync(filePath, 'utf8');
 
-  // Inline CSS
-  const cssTarget = '<link rel="stylesheet" href="css/style.css">';
-  if (html.includes(cssTarget)) {
-    html = html.replace(cssTarget, '<style>\n' + css + '\n</style>');
+  // Replace <style>...</style> block with latest css
+  const styleStart = html.indexOf('<style>');
+  const styleEnd = html.indexOf('</style>');
+  if (styleStart !== -1 && styleEnd !== -1) {
+    html = html.substring(0, styleStart) + '<style>\n' + css + '\n</style>' + html.substring(styleEnd + 8);
+  } else {
+    const cssTarget = '<link rel="stylesheet" href="css/style.css">';
+    if (html.includes(cssTarget)) {
+      html = html.replace(cssTarget, '<style>\n' + css + '\n</style>');
+    }
   }
 
-  // Inline JS
-  const cmsTarget = '<script src="js/cms.js"></script>';
-  if (html.includes(cmsTarget)) {
-    html = html.replace(cmsTarget, '<script>\n' + jsCms + '\n</script>');
-  }
-
-  const mainTarget = '<script src="js/main.js"></script>';
-  if (html.includes(mainTarget)) {
-    html = html.replace(mainTarget, '<script>\n' + jsMain + '\n</script>');
+  if (file === 'admin.html') {
+    // admin.html has its own second <script> block, the first one is cms.js
+    const firstScriptStart = html.indexOf('<script>');
+    const firstScriptEnd = html.indexOf('</script>');
+    if (firstScriptStart !== -1 && firstScriptEnd !== -1) {
+      html = html.substring(0, firstScriptStart) + '<script>\n' + jsCms + '\n</script>' + html.substring(firstScriptEnd + 9);
+    }
+  } else {
+    // For other files, replace the inlined script block with cms.js + main.js
+    const scriptStart = html.indexOf('<script>');
+    const scriptEnd = html.lastIndexOf('</script>');
+    if (scriptStart !== -1 && scriptEnd !== -1) {
+      const combinedJs = jsCms + '\n\n' + jsMain;
+      html = html.substring(0, scriptStart) + '<script>\n' + combinedJs + '\n</script>' + html.substring(scriptEnd + 9);
+    }
   }
 
   fs.writeFileSync(filePath, html, 'utf8');
-  console.log('Bundled:', file);
+  console.log('Re-bundled:', file);
 });
 
-console.log('All files are now self-contained with CSS and JS embedded!');
+console.log('All files updated successfully with latest CSS & JS!');

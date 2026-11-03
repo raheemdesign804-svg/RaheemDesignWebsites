@@ -1016,8 +1016,8 @@ section {
 
 .portfolio-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(370px, 1fr));
-  gap: 2.25rem;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 2rem;
 }
 
 .portfolio-card {
@@ -1038,8 +1038,8 @@ section {
 .portfolio-img-wrapper {
   position: relative;
   width: 100%;
-  height: 420px; /* Extra large, tall website preview frame! */
-  overflow-y: scroll;
+  height: 280px;
+  overflow-y: auto;
   overflow-x: hidden;
   background: #0b0f19;
   cursor: pointer;
@@ -1047,6 +1047,7 @@ section {
   /* Hide scrollbar — all browsers */
   scrollbar-width: none;       /* Firefox */
   -ms-overflow-style: none;   /* IE/Edge */
+  -webkit-overflow-scrolling: touch;
 }
 
 .portfolio-img-wrapper::-webkit-scrollbar {
@@ -1118,6 +1119,8 @@ section {
   display: block;
   object-fit: cover;
   pointer-events: none;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
 }
 
 .mini-web-hero {
@@ -1266,12 +1269,13 @@ section {
 .portfolio-img {
   width: 100%;
   height: auto;
-  min-height: 900px;
   display: block;
   object-fit: cover;
   object-position: top center;
   pointer-events: none;
   user-select: none;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
 }
 
 /* ── Overlay badge ── */
@@ -1798,6 +1802,12 @@ section {
   }
   .portfolio-grid, .pricing-grid {
     grid-template-columns: 1fr;
+  }
+  .portfolio-img-wrapper {
+    height: 240px;
+  }
+  .portfolio-card {
+    max-width: 100%;
   }
 }
 
@@ -2460,6 +2470,76 @@ const DEFAULT_CMS_DATA = {
   projects: [
     {
       id: 1,
+      title: "Memon Medical Institute Hospital",
+      category: "Business Websites",
+      imgUrl: "images/portfolio/mmi-hospital.png",
+      cleanSlug: "mmihospital",
+      desc: "World-class hospital and healthcare institute portal featuring clinical specialties, doctor directory, online appointment booking, and patient testimonials.",
+      features: [
+        "20+ Clinical Specialties Showcase",
+        "Online Doctor & Patient Portal",
+        "Emergency & Diagnostic Services",
+        "Responsive Healthcare UI/UX"
+      ]
+    },
+    {
+      id: 2,
+      title: "Visible Creative Digital Agency",
+      category: "Landing Pages",
+      imgUrl: "images/portfolio/visible-agency.png",
+      cleanSlug: "visibleagency",
+      desc: "High-converting modern digital design agency landing page built to turn visitors into customers with pricing plans, portfolio mockups, and client FAQs.",
+      features: [
+        "High-Converting Value Proposition",
+        "Interactive Mobile Mockup Showcase",
+        "Transparent $600 Pricing Breakdown",
+        "Multi-language Lead Generation"
+      ]
+    },
+    {
+      id: 3,
+      title: "Logistics & Cargo Transport Portal",
+      category: "Business Websites",
+      imgUrl: "images/portfolio/logistics-cargo.png",
+      cleanSlug: "logisticscargo",
+      desc: "Premier global cargo transport & freight forwarding platform featuring air, ocean, rail tracking, fleet rate calculators, and instant quote requests.",
+      features: [
+        "Air, Ocean & Road Freight Tracking",
+        "Instant Online Quote Request Form",
+        "Fleet & Container Specifications",
+        "Dynamic Shipping Pricing Matrix"
+      ]
+    },
+    {
+      id: 4,
+      title: "The Citizens Foundation (TCF)",
+      category: "Business Websites",
+      imgUrl: "images/portfolio/tcf-foundation.png",
+      cleanSlug: "tcfeducation",
+      desc: "Non-profit nationwide education foundation portal showcasing school network units, student impact statistics, volunteer programs, and online donations.",
+      features: [
+        "Interactive Impact Stats & School Units",
+        "Online Donation & Education Sponsor System",
+        "Volunteer & Alumni Community Hub",
+        "Annual Reports & Stories Archive"
+      ]
+    },
+    {
+      id: 5,
+      title: "Dr. Ziauddin Hospital Trust",
+      category: "Business Websites",
+      imgUrl: "images/portfolio/dr-ziauddin-hospital.png",
+      cleanSlug: "ziauddinhospital",
+      desc: "Multispecialty tertiary hospital trust portal with advanced radiology imaging, doctor team profiles, organ transplant patient stories, and laboratory services.",
+      features: [
+        "Advanced Diagnostic Imaging Showcase",
+        "Medical Specialist Team Profiles",
+        "Patient Success Stories & Testimonials",
+        "24/7 Helpline & Branch Locator"
+      ]
+    },
+    {
+      id: 6,
       title: "MFIT Gym & Fitness Club",
       category: "Landing Pages",
       imgUrl: "images/portfolio/mfit-gym.png",
@@ -2473,7 +2553,7 @@ const DEFAULT_CMS_DATA = {
       ]
     },
     {
-      id: 2,
+      id: 7,
       title: "Makeen Tailors & Textile",
       category: "Business Websites",
       imgUrl: "images/portfolio/makeen-tailors.png",
@@ -2487,21 +2567,7 @@ const DEFAULT_CMS_DATA = {
       ]
     },
     {
-      id: 3,
-      title: "Natalie Watson Web Developer",
-      category: "Portfolio Websites",
-      imgUrl: "images/portfolio/developer-portfolio.png",
-      cleanSlug: "nataliedev",
-      desc: "Creative web developer personal portfolio & resume showcase with service breakdown, working process, projects gallery, and reviews.",
-      features: [
-        "Personal Developer Branding",
-        "Interactive Project Showcase",
-        "Client Testimonial Reviews",
-        "Working Process & Experience"
-      ]
-    },
-    {
-      id: 4,
+      id: 8,
       title: "Organic Store & Fresh Grocery",
       category: "E-Commerce",
       imgUrl: "images/portfolio/organic-store.png",
@@ -2515,21 +2581,7 @@ const DEFAULT_CMS_DATA = {
       ]
     },
     {
-      id: 5,
-      title: "Karachi Goods Transport Company",
-      category: "Business Websites",
-      imgUrl: "images/portfolio/goods-transport.png",
-      cleanSlug: "goodstransport",
-      desc: "Comprehensive logistics & cargo transportation portal with all-Pakistan fleet container rates, route coverage, and quick dispatch.",
-      features: [
-        "All-Pakistan Freight Rates",
-        "Fleet & Container Specifications",
-        "Nationwide Route Coverage",
-        "Direct Phone & WhatsApp Booking"
-      ]
-    },
-    {
-      id: 6,
+      id: 9,
       title: "Web Designer Portfolio Site",
       category: "Portfolio Websites",
       imgUrl: "images/portfolio/designer-portfolio.png",
@@ -2607,23 +2659,23 @@ function getCMSData() {
       }
     }
 
-    // Sync projects to new real portfolio projects if old defaults or unsplash URLs are found
-    const hasOldProjects = !parsed.projects || parsed.projects.length === 0 || parsed.projects.some(p => p.title && (p.title.includes('Apex Global') || p.title.includes('Nova Luxe') || p.title.includes('Alfunun Academy Learning') || p.title.includes('Vanguard Freelance')));
+    // Sync projects to new real portfolio projects if old defaults or outdated set is found
+    const hasOldProjects = !parsed.projects || parsed.projects.length < DEFAULT_CMS_DATA.projects.length || parsed.projects.some(p => p.title && (p.title.includes('Apex Global') || p.title.includes('Nova Luxe') || p.title.includes('Alfunun Academy Learning') || p.title.includes('Vanguard Freelance')));
     if (hasOldProjects) {
       parsed.projects = DEFAULT_CMS_DATA.projects;
       saveCMSData(parsed);
     } else if (parsed.projects && Array.isArray(parsed.projects)) {
       let updated = false;
-      // Remove Tariq Traders if it was previously cached in localStorage
-      if (parsed.projects.some(p => p.title && p.title.includes('Tariq Traders'))) {
-        parsed.projects = parsed.projects.filter(p => !p.title || !p.title.includes('Tariq Traders'));
+      // Remove Tariq Traders or Natalie Watson if present
+      if (parsed.projects.some(p => p.title && (p.title.includes('Tariq Traders') || p.title.includes('Natalie Watson')))) {
+        parsed.projects = parsed.projects.filter(p => !p.title || (!p.title.includes('Tariq Traders') && !p.title.includes('Natalie Watson')));
         updated = true;
       }
       parsed.projects = parsed.projects.map(p => {
         const def = DEFAULT_CMS_DATA.projects.find(d => d.id === p.id);
-        if (def && (p.imgUrl !== def.imgUrl || !p.cleanSlug)) {
+        if (def && (p.imgUrl !== def.imgUrl || !p.cleanSlug || p.title !== def.title)) {
           updated = true;
-          return { ...p, imgUrl: def.imgUrl, cleanSlug: def.cleanSlug };
+          return { ...p, title: def.title, imgUrl: def.imgUrl, cleanSlug: def.cleanSlug, desc: def.desc, features: def.features, category: def.category };
         }
         return p;
       });
@@ -2668,8 +2720,7 @@ function deleteInboxMessage(id) {
   localStorage.setItem(CMS_INBOX_KEY, JSON.stringify(messages));
 }
 
-</script>
-  <script>
+
 /* -------------------------------------------------------------------
    RAHEEM DESIGN - Main Client Interactivity & CMS Live Renderer
    ------------------------------------------------------------------- */
