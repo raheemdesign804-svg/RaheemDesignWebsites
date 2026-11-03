@@ -204,34 +204,6 @@ const DEFAULT_CMS_DATA = {
     },
     {
       id: 6,
-      title: "MFIT Gym & Fitness Club",
-      category: "Landing Pages",
-      imgUrl: "images/portfolio/mfit-gym.png",
-      cleanSlug: "mfitgym",
-      desc: "High-impact fitness club landing page featuring workout programs, video tours, wellness solutions, and interactive membership packages.",
-      features: [
-        "Workout & Fitness Programs",
-        "Interactive Membership Packages",
-        "Trainer & Facility Showcase",
-        "Mobile Responsive & Fast Load"
-      ]
-    },
-    {
-      id: 7,
-      title: "Makeen Tailors & Textile",
-      category: "Business Websites",
-      imgUrl: "images/portfolio/makeen-tailors.png",
-      cleanSlug: "makeentailors",
-      desc: "Luxury bespoke tailoring & textile brand website with suiting gallery, fabric catalog, 5-step tailoring process, and booking.",
-      features: [
-        "Bespoke Suiting Gallery",
-        "Textile & Fabric Catalog",
-        "Tailoring Process Guide",
-        "WhatsApp Direct Appointment"
-      ]
-    },
-    {
-      id: 8,
       title: "Organic Store & Fresh Grocery",
       category: "E-Commerce",
       imgUrl: "images/portfolio/organic-store.png",
@@ -242,20 +214,6 @@ const DEFAULT_CMS_DATA = {
         "Daily Deals & Discounts",
         "Customer Reviews Section",
         "Seamless Mobile Shopping"
-      ]
-    },
-    {
-      id: 9,
-      title: "Web Designer Portfolio Site",
-      category: "Portfolio Websites",
-      imgUrl: "images/portfolio/designer-portfolio.png",
-      cleanSlug: "webdesignerportfolio",
-      desc: "Sleek dark-themed web designer personal portfolio featuring services, skills, tools, portfolio gallery, pricing table, FAQs, and blog.",
-      features: [
-        "Dark Green Professional Theme",
-        "Services & Tools Showcase",
-        "Portfolio Gallery & Pricing",
-        "Blog & FAQ Sections"
       ]
     }
   ],
@@ -324,17 +282,20 @@ function getCMSData() {
     }
 
     // Sync projects to new real portfolio projects if old defaults or outdated set is found
-    const hasOldProjects = !parsed.projects || parsed.projects.length < DEFAULT_CMS_DATA.projects.length || parsed.projects.some(p => p.title && (p.title.includes('Apex Global') || p.title.includes('Nova Luxe') || p.title.includes('Alfunun Academy Learning') || p.title.includes('Vanguard Freelance')));
+    const hasRemovedProjects = parsed.projects && parsed.projects.some(p => p.title && (
+      p.title.includes('Makeen') || 
+      p.title.includes('MFIT') || 
+      p.title.includes('Designer Portfolio') ||
+      p.title.includes('Web Designer Portfolio') ||
+      p.title.includes('Tariq Traders') || 
+      p.title.includes('Natalie Watson')
+    ));
+    const hasOldProjects = !parsed.projects || parsed.projects.length === 0 || hasRemovedProjects || parsed.projects.some(p => p.title && (p.title.includes('Apex Global') || p.title.includes('Nova Luxe') || p.title.includes('Alfunun Academy Learning') || p.title.includes('Vanguard Freelance')));
     if (hasOldProjects) {
       parsed.projects = DEFAULT_CMS_DATA.projects;
       saveCMSData(parsed);
     } else if (parsed.projects && Array.isArray(parsed.projects)) {
       let updated = false;
-      // Remove Tariq Traders or Natalie Watson if present
-      if (parsed.projects.some(p => p.title && (p.title.includes('Tariq Traders') || p.title.includes('Natalie Watson')))) {
-        parsed.projects = parsed.projects.filter(p => !p.title || (!p.title.includes('Tariq Traders') && !p.title.includes('Natalie Watson')));
-        updated = true;
-      }
       parsed.projects = parsed.projects.map(p => {
         const def = DEFAULT_CMS_DATA.projects.find(d => d.id === p.id);
         if (def && (p.imgUrl !== def.imgUrl || !p.cleanSlug || p.title !== def.title)) {
