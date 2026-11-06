@@ -3094,14 +3094,7 @@ function renderPortfolioProjects(projects) {
         <div class="portfolio-category">${p.category}</div>
         <h3 class="portfolio-title">${p.title}</h3>
         <p class="portfolio-desc">${p.desc}</p>
-        <div style="display: flex; gap: 0.65rem; margin-top: 1.15rem; flex-wrap: wrap;">
-          <button class="btn btn-primary btn-sm" onclick="openProjectModalByObj(${p.id})">
-            <i class="fa-solid fa-up-right-and-down-left-from-center"></i> View Details
-          </button>
-          <a href="https://wa.me/923012455577?text=Hi%20Raheem,%20I%20want%20to%20order%20a%20website%20like%20${encodeURIComponent(p.title)}" target="_blank" class="btn btn-secondary btn-sm">
-            <i class="fa-brands fa-whatsapp"></i> Inquire
-          </a>
-        </div>
+
       </div>
     </div>
   `).join('');
